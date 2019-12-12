@@ -144,3 +144,156 @@ function sumPrimes(num) {
 }
 
 sumPrimes(10);
+
+
+//=====Smallest Common Multiple
+function smallestCommons(arr) {
+  arr.sort((a, b) => a - b)
+  let newArr = []
+
+  for (let i = arr[0]; i <= arr[1]; i++) {
+    newArr.push(i)
+  }
+
+  let a = Math.abs(newArr[0])
+
+  for (let i = 1; i < newArr.length; i++) {
+    let b = Math.abs(newArr[i]), c = a;
+    while (a && b) {
+      a > b ? a %= b : b %= a
+    }
+    a = Math.abs(c * newArr[i]) / (a + b);
+  }
+
+  return a
+}
+
+smallestCommons([1, 5]);
+
+
+//=====Drop it
+function dropElements(arr, func) {
+  let startIndex = arr.indexOf(arr.filter(func)[0])
+  if (startIndex < 0) return []
+  else
+    return arr.slice(startIndex)
+}
+
+dropElements([1, 2, 3], function (n) { return n > 2; });
+dropElements([1, 2, 3, 4], function (n) { return n > 5; })
+
+//=====Steamroller
+function steamrollArray(arr) {
+  var newArr = []
+
+  function flatten(arg) {
+    if (!Array.isArray(arg)) {
+      newArr.push(arg)
+    } else {
+      for (let a in arg) {
+        flatten(arg[a])
+      }
+    }
+  }
+
+  arr.forEach(flatten)
+  return newArr
+}
+steamrollArray([1, [2], [3, [[4]]]]);
+
+
+//=====Binary Agents
+function binaryAgent(str) {
+  let arr = str.split(" ");
+  let newString = [];
+
+  for (let i = 0; i < arr.length; i++) {
+    newString.push(String.fromCharCode(parseInt(arr[i], 2)));
+  }
+
+  return newString.join("")
+}
+
+binaryAgent("01000001 01110010 01100101 01101110 00100111 01110100 00100000 01100010 01101111 01101110 01100110 01101001 01110010 01100101 01110011 00100000 01100110 01110101 01101110 00100001 00111111");
+
+//=====Everything Be True
+function truthCheck(collection, pre) {
+  let allTrue = true
+  for (let obj in collection) {
+    if (collection[obj][pre]) {
+    } else {
+      return false
+    }
+  }
+  return allTrue
+}
+
+truthCheck([{ "user": "Tinky-Winky", "sex": "male" }, { "user": "Dipsy", "sex": "male" }, { "user": "Laa-Laa", "sex": "female" }, { "user": "Po", "sex": "female" }], "sex");
+
+
+//=====Arguments Optional
+function addTogether() {
+  let argArr = [...arguments]
+  return argArr.some(n => typeof n != 'number')
+    ? undefined
+    : argArr.length > 1
+      ? argArr.reduce((acc, el) => acc += el)
+      : n => (typeof n === "number" ? n + argArr[0] : undefined)
+
+}
+
+addTogether(2)(3)
+
+
+
+
+//=====Make a Person
+var Person = function (firstAndLast) {
+  let fullName = firstAndLast
+
+  this.getFullName = function () {
+    return fullName
+  }
+
+  this.getFirstName = function () {
+    return fullName.split(' ')[0]
+  }
+
+  this.getLastName = function () {
+    return fullName.split(' ')[1]
+  }
+
+  this.setFirstName = function (first) {
+    fullName = first + ' ' + fullName.split(' ')[1]
+  }
+
+  this.setLastName = function (last) {
+    fullName = fullName.split(' ')[0] + ' ' + last
+  }
+
+  this.setFullName = function (firstAndLast) {
+    fullName = firstAndLast
+  }
+
+};
+
+var bob = new Person('Bob Ross');
+bob.getFullName();
+
+
+//======Map the Debris
+function orbitalPeriod(arr) {
+  var GM = 398600.4418;
+  var earthRadius = 6367.4447;
+
+  return arr.map(function (el) {
+    return {
+      name: el.name,
+      orbitalPeriod: Math.round((2 * Math.PI) *
+        Math.sqrt(Math.pow(earthRadius + el.avgAlt, 3) / GM))
+    }
+  });
+
+}
+
+orbitalPeriod([{ name: "sputnik", avgAlt: 35873.5553 }]);
